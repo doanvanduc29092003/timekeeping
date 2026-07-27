@@ -1,0 +1,131 @@
+/* Tablet */
+@media (max-width: 992px){
+
+    .container{
+        width:95%;
+        padding:15px;
+    }
+
+    .summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .calendar{
+        gap:6px;
+    }
+
+    .day{
+        min-height:90px;
+        padding:8px;
+    }
+
+}
+
+/* Mobile */
+@media (max-width:768px){
+
+    body{
+        padding:10px;
+    }
+
+    h2{
+        font-size:22px;
+    }
+
+    .container{
+        width:100%;
+        padding:12px;
+        border-radius:8px;
+    }
+
+    .form{
+        grid-template-columns:1fr;
+    }
+
+    button{
+        width:100%;
+        font-size:17px;
+    }
+
+    .calendar{
+        gap:4px;
+    }
+
+    .day-name{
+        padding:6px;
+        font-size:13px;
+    }
+
+    .day{
+        min-height:85px;
+        padding:6px;
+        font-size:13px;
+    }
+
+    .day-number{
+        font-size:15px;
+    }
+
+    .ot-input{
+        padding:4px;
+        font-size:12px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:12px;
+    }
+
+    .card h3{
+        font-size:16px;
+    }
+
+    .card p{
+        font-size:22px;
+    }
+
+}
+
+/* Điện thoại nhỏ */
+@media (max-width:480px){
+
+    body{
+        padding:6px;
+    }
+
+    h2{
+        font-size:18px;
+    }
+
+    .container{
+        padding:10px;
+    }
+
+    .calendar{
+        gap:2px;
+    }
+
+    .day-name{
+        font-size:11px;
+        padding:5px;
+    }
+
+    .day{
+        min-height:75px;
+        padding:4px;
+        font-size:11px;
+    }
+
+    .day-number{
+        font-size:14px;
+    }
+
+    .ot-input{
+        font-size:11px;
+        padding:3px;
+    }
+
+}

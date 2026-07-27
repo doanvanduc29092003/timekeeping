@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính công và tăng ca</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>TÍNH NGÀY ĐI LÀM & TĂNG CA</h2>
+
+        <div class="form">
+
+            <div>
+                <label>Tên nhân viên</label>
+                <select id="employee" onchange="updateShift()">
+                    <option>Lê Xuân Hiển</option>
+                    <option>Đoàn Văn Đức</option>
+                    <option>Phạm Quang Hưng</option>
+                    <option>Nguyễn Văn Tiến</option>
+                    <option>Hà Xuân Diện</option>
+                    <option>Hoàng Duy Tuấn</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Kíp</label>
+                <input type="text" id="shift" readonly>
+            </div>
+
+            <div>
+                <label>Tháng</label>
+                <select id="month"></select>
+            </div>
+
+            <div>
+                <label>Năm</label>
+                <select id="year">
+                    <option>2026</option>
+                    <option>2027</option>
+                </select>
+            </div>
+
+        </div>
+
+        <button onclick="generateCalendar()">
+            Tạo lịch & Tính công
+        </button>
+
+        <div id="calendar" class="calendar"></div>
+
+        <div class="summary">
+
+            <div class="card">
+                <h3>Ngày làm</h3>
+                <p id="workDays">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Ngày nghỉ</h3>
+                <p id="offDays">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Giờ hành chính</h3>
+                <p id="normalHours">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Tăng ca</h3>
+                <p id="otHours">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Tổng giờ</h3>
+                <p id="totalHours">0</p>
+            </div>
+
+        </div>
+
+    </div>
+    
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

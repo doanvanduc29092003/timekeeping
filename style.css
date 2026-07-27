@@ -1,0 +1,127 @@
+body{
+    font-family:Arial;
+    background:#f2f5f9;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 15px rgba(0,0,0,.1);
+}
+
+h2{
+    text-align:center;
+    color:#007bff;
+}
+
+.form{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+select,
+#shift{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    box-sizing:border-box;
+}
+
+#shift{
+    background:#f5f5f5;
+}
+
+button{
+    background:#007bff;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+    margin-top:20px;
+}
+
+.day-name{
+    font-weight:bold;
+    text-align:center;
+    padding:8px;
+    background:#007bff;
+    color:white;
+    border-radius:6px;
+}
+
+.day{
+    background:#e9ecef;
+    padding:10px;
+    min-height:100px;
+    border-radius:8px;
+    position:relative;
+}
+
+.work-day{
+    background:#d4edda;
+}
+
+.work-night{
+    background:#5d6670;
+    color:white;
+}
+
+.off{
+    background:#f8d7da;
+}
+
+.day-number{
+    font-weight:bold;
+}
+
+.ot-input{
+    width:100%;
+    margin-top:8px;
+    padding:5px;
+    box-sizing:border-box;
+}
+
+.summary{
+    margin-top:25px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+}
+
+.card{
+    background:#f8f9fa;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+}
+
+.card h3{
+    margin:0;
+    color:#007bff;
+}
+
+.card p{
+    margin:8px 0 0;
+    font-size:20px;
+    font-weight:bold;
+}
