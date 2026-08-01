@@ -22,10 +22,10 @@ function getShiftStatus(date, shift) {
             offset = 2;
             break;
         case "B":
-            offset = 0;
+            offset = 6;
             break;
         case "C":
-            offset = 4;
+            offset = 10;
             break;
     }
 
@@ -128,7 +128,6 @@ function generateCalendar() {
         }
 
         calendar.innerHTML += `
-        <div class="day ${work ? 'work' : 'off'}">
         <div class="day ${work
                 ? (night ? "work-night" : "work-day")
                 : "off"
@@ -151,6 +150,12 @@ function generateCalendar() {
                 placeholder="OT giờ"
                 oninput="calculateSummary()">
 
+                ${work ? `
+                    <button class="np-btn" onclick="toggleNP(this)">
+                        NP
+                    </button>
+                    ` : ""}
+
         </div>
         `;
 
@@ -158,6 +163,18 @@ function generateCalendar() {
 
     window.currentWorkDays = workDays;
     window.currentOffDays = offDays;
+
+    // đoạn này nữa
+    document.getElementById("workDays").innerText = workDays;
+    document.getElementById("offDays").innerText = offDays;
+
+    calculateSummary();
+
+}
+
+function toggleNP(btn){
+
+    btn.classList.toggle("active");
 
     calculateSummary();
 
@@ -178,18 +195,50 @@ function calculateSummary() {
 
     days.forEach(day => {
 
-        if (!day.classList.contains("work")) return;
+        // if (!day.classList.contains("work")) return;
+        if (
+            !day.classList.contains("work-day") &&
+            !day.classList.contains("work-night") &&
+            !day.classList.contains("work")
+        ){
+            return;
+        }
 
         const dayNumber = parseInt(day.querySelector(".day-number").innerText);
 
         const date = new Date(year, month - 1, dayNumber);
 
-        normalHours += 11;
+        // normalHours += 11;
 
-        if (date.getDay() == 0) {
-            otHours += 3;
-        } else {
-            otHours += 1;
+        // if (date.getDay() == 0) {
+        //     otHours += 3;
+        // } else {
+        //     otHours += 1;
+        // }
+
+
+        // Xem lai doan nay ???
+        const npBtn = day.querySelector(".np-btn");
+
+        const isNP = npBtn && npBtn.classList.contains("active");
+
+        if(!isNP){
+
+            normalHours += 11;
+
+            if(date.getDay()==0){
+                otHours +=3;
+            }else{
+                otHours +=1;
+            }
+
+        }else{
+
+            // Nghỉ phép => trừ 1 ngày công
+            workDays--;
+
+            offDays++;
+
         }
 
     });
