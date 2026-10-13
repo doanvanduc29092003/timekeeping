@@ -1,0 +1,197 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f5f9;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #007bff;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+select,
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#shift {
+    background: #f5f5f5;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.calendar-title {
+    margin-top: 25px;
+}
+
+/* LỊCH */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.day-name {
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 2px;
+    background: #007bff;
+    color: white;
+    border-radius: 6px;
+}
+
+.day {
+    background: #e9ecef;
+    padding: 10px;
+    min-width: 0;
+    min-height: 100px;
+    border-radius: 8px;
+    position: relative;
+    overflow-wrap: anywhere;
+}
+
+.work-day {
+    background: #d4edda;
+}
+
+.work-night {
+    background: #5d6670;
+    color: white;
+}
+
+.off {
+    background: #f8d7da;
+}
+
+/* NGÀY DƯƠNG VÀ NGÀY ÂM TRÊN CÙNG MỘT HÀNG */
+.day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3px;
+    margin-bottom: 5px;
+}
+
+.day-number {
+    font-weight: bold;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.lunar-inline {
+    font-size: 11px;
+    font-weight: bold;
+    color: #a1262d;
+    text-align: right;
+}
+
+/* Ngày âm dễ nhìn trên nền tối của ca đêm */
+.work-night .lunar-inline {
+    color: #ffe08a;
+}
+
+/* Ô nhập tăng ca */
+.ot-input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin-top: 8px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* NÚT NGHỈ PHÉP */
+.np-btn {
+    width: 100%;
+    margin-top: 5px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background: #ffc107;
+    color: #222;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.np-btn:hover {
+    background: #e0a800;
+}
+
+.np-btn.active {
+    background: #dc3545;
+    color: white;
+}
+
+/* TỔNG KẾT */
+.summary {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.card h3 {
+    margin: 0;
+    color: #007bff;
+    font-size: 16px;
+}
+
+.card p {
+    margin: 8px 0 0;
+    font-size: 20px;
+    font-weight: bold;
+}

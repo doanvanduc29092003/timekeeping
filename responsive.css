@@ -1,0 +1,129 @@
+
+/* giao diên mobile */
+@media (max-width: 600px) {
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .form {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .form label {
+        font-size: 12px;
+    }
+
+    select,
+    input[type="text"] {
+        padding: 8px 5px;
+        font-size: 12px;
+    }
+
+    #generateBtn {
+        width: 100%;
+        padding: 10px 5px;
+        font-size: 14px;
+    }
+
+    .calendar {
+        gap: 3px;
+        margin-top: 12px;
+    }
+
+    .day-name {
+        padding: 7px 1px;
+        font-size: 12px;
+    }
+
+    .day {
+        min-height: 85px;
+        padding: 4px 2px;
+        font-size: 11px;
+    }
+
+    .day-header {
+        gap: 2px;
+        margin-bottom: 4px;
+    }
+
+    .day-number {
+        font-size: 13px;
+    }
+
+    .lunar-inline {
+        font-size: 9px;
+        overflow-wrap: anywhere;
+    }
+
+    .ot-input {
+        padding: 4px 1px;
+        font-size: 10px;
+        margin-top: 6px;
+    }
+
+    .np-btn {
+        padding: 4px 1px;
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
+    .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .card {
+        padding: 12px 5px;
+    }
+
+    .card h3 {
+        font-size: 14px;
+    }
+
+    .card p {
+        font-size: 18px;
+    }
+}
+
+/* MÀN HÌNH RẤT NHỎ */
+@media (max-width: 360px) {
+    .container {
+        padding: 6px;
+    }
+
+    .calendar {
+        gap: 2px;
+    }
+
+    .day {
+        padding: 3px 1px;
+        min-height: 78px;
+        font-size: 10px;
+    }
+
+    .day-number {
+        font-size: 12px;
+    }
+
+    .lunar-inline {
+        font-size: 8px;
+    }
+
+    .ot-input {
+        font-size: 9px;
+    }
+
+    .np-btn {
+        font-size: 10px;
+    }
+}
