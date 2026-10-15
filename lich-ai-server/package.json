@@ -1,10 +1,11 @@
+
 {
   "name": "lich-ai-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend AI cho website chấm công",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +15,6 @@
     "@google/genai": "^2.29.1",
     "cors": "^2.8.6",
     "dotenv": "^18.0.7",
-    "express": "^5.3.0",
-    "openai": "^7.33.0"
+    "express": "^5.3.0"
   }
 }

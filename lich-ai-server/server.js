@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const express = require("express");
@@ -5,92 +6,142 @@ const cors = require("cors");
 const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
-// Render sẽ tự cấp cổng PORT (thường là 10000), host 0.0.0.0
 const PORT = process.env.PORT || 3000;
 
-if (!process.env.GEMINI_API_KEY) {
-    console.error("Thieu GEMINI_API_KEY trong Environment Variables");
-    process.exit(1);
-}
-
-const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
-});
-
-// Lấy danh sách origin được phép gọi API
+// Các website được phép gọi API
 const allowedOrigins = (
-    process.env.FRONTEND_ORIGIN || 
-    "http://localhost:5500,http://127.0.0.1:5500,https://doanvanduc29092003.github.io"
+  process.env.FRONTEND_ORIGIN ||
+  "http://localhost:5500,http://127.0.0.1:5500"
 )
-    .split(",")
-    .map(origin => origin.trim());
+  .split(",")
+  .map((origin) => origin.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
 
-// Cấu hình CORS chi tiết hơn để tránh trình duyệt chặn GitHub Pages
-app.use(cors({
-    origin: function (origin, callback) {
-        // Cho phép các yêu cầu không có origin (như Postman hoặc curl) hoặc thuộc danh sách allowedOrigins
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("CORS Policy: Origin khong duoc phep truy cap."));
-        }
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Cho phép công cụ gọi API không có Origin,
+      // ví dụ curl hoặc kiểm tra health từ server.
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Origin không được phép: " + origin));
     },
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-}));
+    allowedHeaders: ["Content-Type"]
+  })
+);
 
 app.use(express.json({ limit: "10kb" }));
 
-// Route kiểm tra trạng thái sức khỏe của Server
+// Khởi tạo Gemini khi có API key
+const ai = process.env.GEMINI_API_KEY
+  ? new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY.trim()
+    })
+  : null;
+
+// Kiểm tra server
+app.get("/", (req, res) => {
+  res.json({
+    ok: true,
+    message: "Timekeeping AI backend is running"
+  });
+});
+
+// Kiểm tra tình trạng backend và cấu hình
 app.get("/api/health", (req, res) => {
-    res.json({ ok: true, ai: "Google AI Studio", status: "Live" });
+  res.json({
+    ok: true,
+    aiConfigured: Boolean(ai),
+    service: "Timekeeping AI"
+  });
 });
 
+// Chat với Gemini
 app.post("/api/chat", async (req, res) => {
-    try {
-        const { message } = req.body || {};
-
-        if (typeof message !== "string" || !message.trim()) {
-            return res.status(400).json({
-                error: "Vui lòng nhập câu hỏi."
-            });
-        }
-
-        if (message.length > 2000) {
-            return res.status(400).json({
-                error: "Câu hỏi tối đa 2000 ký tự."
-            });
-        }
-
-        const result = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: message.trim(),
-            config: {
-                systemInstruction:
-                    "Bạn là trợ lý AI thông minh, thân thiện. " +
-                    "Trả lời bằng tiếng Việt, dễ hiểu, rõ ràng. " +
-                    "Hỗ trợ kiến thức chung, máy tính, lập trình " +
-                    "và hướng dẫn sử dụng website. " +
-                    "Không tự bịa lịch làm việc hoặc giờ công khi " +
-                    "chưa được cung cấp dữ liệu."
-            }
-        });
-
-        res.json({
-            reply: result.text || "AI chưa có câu trả lời."
-        });
-    } catch (error) {
-        console.error("Gemini API error:", error.message);
-
-        res.status(500).json({
-            error:
-                "Không gọi được Gemini. Hãy kiểm tra API key, " +
-                "model và hạn mức sử dụng."
-        });
+  try {
+    if (!ai) {
+      return res.status(503).json({
+        error: "Server chưa cấu hình GEMINI_API_KEY."
+      });
     }
+
+    const message = req.body?.message;
+
+    if (typeof message !== "string" || !message.trim()) {
+      return res.status(400).json({
+        error: "Vui lòng nhập câu hỏi."
+      });
+    }
+
+    if (message.length > 2000) {
+      return res.status(400).json({
+        error: "Câu hỏi tối đa 2000 ký tự."
+      });
+    }
+
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: message.trim(),
+      config: {
+        systemInstruction:
+          "Bạn là trợ lý AI của website chấm công. " +
+          "Trả lời bằng tiếng Việt, thân thiện và dễ hiểu. " +
+          "Hỗ trợ kiến thức chung, máy tính, lập trình " +
+          "và hướng dẫn sử dụng website. " +
+          "Chỉ đưa ra dữ liệu chấm công khi dữ liệu đó " +
+          "được người dùng cung cấp; không tự bịa giờ công."
+      }
+    });
+
+    const reply = result.text;
+
+    if (!reply) {
+      return res.status(502).json({
+        error: "Gemini không trả về nội dung. Vui lòng thử lại."
+      });
+    }
+
+    return res.json({ reply });
+  } catch (error) {
+    console.error(
+      "Gemini API error:",
+      error.status || "",
+      error.message || error
+    );
+
+    return res.status(500).json({
+      error:
+        "Không gọi được Gemini. Hãy kiểm tra API key, " +
+        "quyền truy cập model và hạn mức API."
+    });
+  }
 });
 
-// Lắng nghe trên 0.0.0.0 để Render dễ dàng định tuyến (Routing)
+// Báo lỗi JSON không hợp lệ
+app.use((err, req, res, next) => {
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({
+      error: "Dữ liệu JSON không hợp lệ."
+    });
+  }
+
+  if (err.message?.startsWith("Origin không được phép:")) {
+    return res.status(403).json({
+      error: "Website này chưa được cho phép gọi API."
+    });
+  }
+
+  console.error("Server error:", err.message || err);
+
+  return res.status(500).json({
+    error: "Lỗi máy chủ."
+  });
+});
+
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server đang chạy thành công tại cổng ${PORT}`);
+  console.log(`Timekeeping AI server đang chạy tại cổng ${PORT}`);
+  console.log(`Gemini API key configured: ${Boolean(ai)}`);
 });
