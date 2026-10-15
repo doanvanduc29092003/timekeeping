@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 
 const express = require("express");
@@ -6,10 +5,11 @@ const cors = require("cors");
 const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
+// Render sẽ tự cấp cổng PORT (thường là 10000), host 0.0.0.0
 const PORT = process.env.PORT || 3000;
 
 if (!process.env.GEMINI_API_KEY) {
-    console.error("Thieu GEMINI_API_KEY trong file .env");
+    console.error("Thieu GEMINI_API_KEY trong Environment Variables");
     process.exit(1);
 }
 
@@ -17,17 +17,33 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
+// Lấy danh sách origin được phép gọi API
 const allowedOrigins = (
-    process.env.FRONTEND_ORIGIN || "http://localhost:5500"
+    process.env.FRONTEND_ORIGIN || 
+    "http://localhost:5500,http://127.0.0.1:5500,https://doanvanduc29092003.github.io"
 )
     .split(",")
     .map(origin => origin.trim());
 
-app.use(cors({ origin: allowedOrigins }));
+// Cấu hình CORS chi tiết hơn để tránh trình duyệt chặn GitHub Pages
+app.use(cors({
+    origin: function (origin, callback) {
+        // Cho phép các yêu cầu không có origin (như Postman hoặc curl) hoặc thuộc danh sách allowedOrigins
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS Policy: Origin khong duoc phep truy cap."));
+        }
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json({ limit: "10kb" }));
 
+// Route kiểm tra trạng thái sức khỏe của Server
 app.get("/api/health", (req, res) => {
-    res.json({ ok: true, ai: "Google AI Studio" });
+    res.json({ ok: true, ai: "Google AI Studio", status: "Live" });
 });
 
 app.post("/api/chat", async (req, res) => {
@@ -74,8 +90,7 @@ app.post("/api/chat", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(
-        `Gemini server dang chay tai http://localhost:${PORT}`
-    );
+// Lắng nghe trên 0.0.0.0 để Render dễ dàng định tuyến (Routing)
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server đang chạy thành công tại cổng ${PORT}`);
 });
