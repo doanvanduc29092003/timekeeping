@@ -458,7 +458,7 @@ document.getElementById("calendar").addEventListener("input", event => {
    AI CHAT - TRỢ LÝ THÔNG MINH
 ===================================== */
 (() => {
-    const API_URL = "https://timekeeping-1-hgmy.onrender.com/";
+    const API_URL = "https://timekeeping-1-hgmy.onrender.com/api/chat";
 
     const toggle = document.getElementById("aiToggle");
     const chat = document.getElementById("aiChat");
