@@ -1,4 +1,7 @@
 
+/* =========================
+   GIAO DIỆN CHUNG
+========================= */
 * {
     box-sizing: border-box;
 }
@@ -8,6 +11,7 @@ body {
     background: #f2f5f9;
     margin: 0;
     padding: 20px;
+    color: #222;
 }
 
 .container {
@@ -25,6 +29,9 @@ h2 {
     color: #007bff;
 }
 
+/* =========================
+   FORM CHỌN LỊCH
+========================= */
 .form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -41,9 +48,17 @@ h2 {
 select,
 input[type="text"] {
     width: 100%;
+    min-width: 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
+    font-size: 14px;
+}
+
+select:focus,
+input[type="text"]:focus {
+    outline: 2px solid #b6d4fe;
+    border-color: #007bff;
 }
 
 #shift {
@@ -64,11 +79,18 @@ button:hover {
     background: #0056b3;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .calendar-title {
     margin-top: 25px;
 }
 
-/* LỊCH */
+/* =========================
+   LỊCH
+========================= */
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -108,7 +130,7 @@ button:hover {
     background: #f8d7da;
 }
 
-/* NGÀY DƯƠNG VÀ NGÀY ÂM TRÊN CÙNG MỘT HÀNG */
+/* Ngày dương và ngày âm */
 .day-header {
     display: flex;
     align-items: center;
@@ -130,7 +152,6 @@ button:hover {
     text-align: right;
 }
 
-/* Ngày âm dễ nhìn trên nền tối của ca đêm */
 .work-night .lunar-inline {
     color: #ffe08a;
 }
@@ -146,7 +167,7 @@ button:hover {
     border-radius: 4px;
 }
 
-/* NÚT NGHỈ PHÉP */
+/* Nút nghỉ phép */
 .np-btn {
     width: 100%;
     margin-top: 5px;
@@ -169,7 +190,9 @@ button:hover {
     color: white;
 }
 
-/* TỔNG KẾT */
+/* =========================
+   TỔNG KẾT CÔNG
+========================= */
 .summary {
     margin-top: 25px;
     display: grid;
@@ -194,4 +217,215 @@ button:hover {
     margin: 8px 0 0;
     font-size: 20px;
     font-weight: bold;
+}
+
+/* =========================
+   AI CHAT
+========================= */
+.ai-toggle,
+.ai-chat,
+.ai-chat * {
+    box-sizing: border-box;
+}
+
+.ai-toggle {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 30px;
+    background: #1769e0;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.ai-toggle:hover {
+    background: #0b55bd;
+    transform: translateY(-2px);
+}
+
+.ai-chat {
+    position: fixed;
+    right: 24px;
+    bottom: 88px;
+    z-index: 9999;
+
+    display: none;
+    flex-direction: column;
+
+    width: 370px;
+    max-width: calc(100vw - 24px);
+    height: 520px;
+    max-height: calc(100dvh - 110px);
+
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 18px;
+    background: #fff;
+    color: #222;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.22);
+}
+
+.ai-chat.ai-open {
+    display: flex;
+}
+
+.ai-header {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    background: #1769e0;
+    color: white;
+}
+
+.ai-header div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.ai-header strong {
+    font-size: 16px;
+}
+
+.ai-header small {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.ai-header button {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.ai-header button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.ai-messages {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    padding: 14px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #f7f9fc;
+}
+
+.ai-message {
+    max-width: 90%;
+    padding: 11px 13px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.ai-bot {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-bottom-left-radius: 5px;
+}
+
+.ai-user {
+    align-self: flex-end;
+    background: #1769e0;
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.ai-loading {
+    color: #64748b;
+    font-style: italic;
+}
+
+.ai-form {
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+.ai-form textarea {
+    flex: 1;
+    min-width: 0;
+    min-height: 42px;
+    max-height: 100px;
+    resize: vertical;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.ai-form textarea:focus {
+    border-color: #1769e0;
+    box-shadow: 0 0 0 2px rgba(23, 105, 224, 0.12);
+}
+
+.ai-form button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #1769e0;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ai-form button:hover {
+    background: #0b55bd;
+}
+
+.ai-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ai-note {
+    flex-shrink: 0;
+    padding: 0 10px 10px;
+    text-align: center;
+    color: #777;
+    font-size: 11px;
+    background: white;
 }

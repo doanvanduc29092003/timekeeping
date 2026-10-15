@@ -452,6 +452,171 @@ document.getElementById("calendar").addEventListener("input", event => {
     }
 });
 
+
+
+/* =====================================
+   AI CHAT - TRỢ LÝ THÔNG MINH
+===================================== */
+(() => {
+    const API_URL = "http://localhost:3000/api/chat";
+
+    const toggle = document.getElementById("aiToggle");
+    const chat = document.getElementById("aiChat");
+    const closeBtn = document.getElementById("aiClose");
+    const form = document.getElementById("aiForm");
+    const input = document.getElementById("aiInput");
+    const messages = document.getElementById("aiMessages");
+    const sendBtn = document.getElementById("aiSend");
+
+    // Không có giao diện AI thì giữ nguyên chức năng lịch
+    if (
+        !toggle || !chat || !closeBtn ||
+        !form || !input || !messages || !sendBtn
+    ) {
+        console.warn("Chưa tìm thấy đầy đủ giao diện AI chat.");
+        return;
+    }
+
+    const welcomeMessage =
+        "Xin chào! Tôi là trợ lý AI. Bạn muốn hỏi điều gì?";
+
+    function addMessage(text, type) {
+        const element = document.createElement("div");
+
+        element.className =
+            "ai-message " +
+            (type === "user" ? "ai-user" : "ai-bot");
+
+        // Dùng textContent để hiển thị nội dung an toàn
+        element.textContent = text;
+
+        messages.appendChild(element);
+        messages.scrollTop = messages.scrollHeight;
+
+        return element;
+    }
+
+    function clearChat() {
+        messages.replaceChildren();
+        addMessage(welcomeMessage, "bot");
+        input.value = "";
+    }
+
+    function openChat() {
+        chat.classList.add("ai-open");
+        chat.setAttribute("aria-hidden", "false");
+        toggle.setAttribute("aria-expanded", "true");
+        input.focus();
+    }
+
+    function closeChat() {
+        chat.classList.remove("ai-open");
+        chat.setAttribute("aria-hidden", "true");
+        toggle.setAttribute("aria-expanded", "false");
+
+        // Đóng chat sẽ xóa nội dung cuộc trò chuyện
+        clearChat();
+    }
+
+    toggle.addEventListener("click", () => {
+        if (chat.classList.contains("ai-open")) {
+            closeChat();
+        } else {
+            openChat();
+        }
+    });
+
+    closeBtn.addEventListener("click", closeChat);
+
+    async function sendMessage(text) {
+        const question = text.trim();
+
+        if (!question || sendBtn.disabled) {
+            return;
+        }
+
+        if (question.length > 2000) {
+            addMessage(
+                "Câu hỏi tối đa 2000 ký tự. Vui lòng rút gọn.",
+                "bot"
+            );
+            return;
+        }
+
+        addMessage(question, "user");
+        input.value = "";
+
+        input.disabled = true;
+        sendBtn.disabled = true;
+
+        const loading = addMessage(
+            "AI đang suy nghĩ...",
+            "bot"
+        );
+
+        loading.classList.add("ai-loading");
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: question
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error || "Yêu cầu AI thất bại."
+                );
+            }
+
+            loading.textContent =
+                data.reply || "AI chưa có câu trả lời.";
+
+        } catch (error) {
+            console.error("Lỗi AI:", error);
+
+            loading.textContent =
+                "Không kết nối được AI. Hãy kiểm tra backend Node.js, " +
+                "API key và địa chỉ máy chủ.";
+
+        } finally {
+            loading.classList.remove("ai-loading");
+            input.disabled = false;
+            sendBtn.disabled = false;
+
+            messages.scrollTop = messages.scrollHeight;
+
+            if (chat.classList.contains("ai-open")) {
+                input.focus();
+            }
+        }
+    }
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        sendMessage(input.value);
+    });
+
+    // Enter để gửi; Shift + Enter để xuống dòng
+    input.addEventListener("keydown", event => {
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey &&
+            !event.isComposing
+        ) {
+            event.preventDefault();
+            form.requestSubmit();
+        }
+    });
+})();
+
+
 /* =========================
    KHỞI CHẠY
 ========================= */

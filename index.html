@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Lịch làm việc</title>
 
     <link rel="stylesheet" href="style.css">
@@ -47,14 +48,14 @@
         </div>
 
         <button type="button" id="generateBtn">
-            Tạo lịch & Tính công
+            Tạo lịch &amp; Tính công
         </button>
 
-        <!-- Lịch âm dương -->
+        <!-- LỊCH LÀM VIỆC -->
         <h2 class="calendar-title">LỊCH DƯƠNG</h2>
         <div id="calendar" class="calendar"></div>
 
-        <!-- footer -->
+        <!-- THỐNG KÊ CÔNG -->
         <div class="summary">
             <div class="card">
                 <h3>Ngày làm</h3>
@@ -83,6 +84,93 @@
         </div>
     </div>
 
+    <!-- ============================= -->
+    <!-- NÚT MỞ TRỢ LÝ AI -->
+    <!-- ============================= -->
+
+    <button
+        id="aiToggle"
+        class="ai-toggle"
+        type="button"
+        aria-label="Mở trợ lý AI"
+        aria-expanded="false"
+        aria-controls="aiChat">
+
+        <span class="ai-toggle-icon">✨</span>
+        <span>Trợ lý AI</span>
+    </button>
+
+    <!-- ============================= -->
+    <!-- KHUNG CHAT AI -->
+    <!-- ============================= -->
+
+    <section
+        id="aiChat"
+        class="ai-chat"
+        aria-label="Trợ lý AI lịch làm việc"
+        aria-hidden="true">
+
+        <!-- ĐẦU KHUNG CHAT -->
+        <div class="ai-header">
+            <div class="ai-avatar">✨</div>
+
+            <div class="ai-heading">
+                <strong>Trợ lý AI</strong>
+                <small>Sẵn sàng hỗ trợ bạn</small>
+            </div>
+
+            <button
+                id="aiClose"
+                type="button"
+                class="ai-close"
+                aria-label="Đóng trò chuyện">
+                ×
+            </button>
+        </div>
+
+        <!-- NỘI DUNG TIN NHẮN -->
+        <div
+            id="aiMessages"
+            class="ai-messages"
+            aria-live="polite"
+            aria-relevant="additions text">
+
+            <div class="ai-message ai-bot">
+                Xin chào! 👋
+
+                Tôi là trợ lý AI của website Lịch làm việc.
+
+                Bạn có thể hỏi tôi về kiến thức, máy tính,
+                lập trình hoặc những vấn đề bạn cần hỗ trợ.
+
+                Hãy nhập câu hỏi bên dưới nhé!
+            </div>
+        </div>
+
+        <!-- Ô NHẬP TIN NHẮN -->
+        <form id="aiForm" class="ai-form">
+            <textarea
+                id="aiInput"
+                rows="1"
+                maxlength="2000"
+                placeholder="Nhập câu hỏi của bạn..."
+                aria-label="Nhập câu hỏi cho AI"
+                required></textarea>
+
+            <button
+                id="aiSend"
+                type="submit"
+                aria-label="Gửi tin nhắn">
+                ➤
+            </button>
+        </form>
+
+        <div class="ai-note">
+            Cuộc trò chuyện không được lưu trên website.
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT LỊCH VÀ AI -->
     <script src="script.js"></script>
 </body>
 </html>
