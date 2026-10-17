@@ -1,4 +1,8 @@
 
+window.addEventListener("load", function () {
+    alert("Năm 2027 chưa upload dữ liệu ngày nghỉ lễ tết, AI CHAT CHƯA HUẤN LUYỆN XONG, VUI LÒNG THÔNG CẢM!!! 17/10/2026");
+});
+
 "use strict";
 
 /* =========================================
@@ -881,7 +885,10 @@ window.addEventListener("pagehide", writeSavedData);
 
 (() => {
     const API_URL =
+
+        //chú ý đoạn nay, nếu bạn deploy lên server khác thì cần đổi lại URL backend Node.js
         "https://timekeeping-1-hgmy.onrender.com/api/chat";
+        // "http://localhost:3000/api/chat";
 
     const toggle = document.getElementById("aiToggle");
     const chat = document.getElementById("aiChat");
