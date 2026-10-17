@@ -429,3 +429,26 @@ button:disabled {
     font-size: 11px;
     background: white;
 }
+
+
+
+/* Làm nổi bật ngày hôm nay */
+.calendar .day.today {
+    position: relative;
+    outline: 3px solid #1976d2;
+    outline-offset: -3px;
+    border-radius: 8px;
+    background-color: #e3f2fd !important;
+    z-index: 1;
+}
+
+/* Nhãn ngày hôm nay */
+.calendar .day.today::before {
+    content: "HÔM NAY";
+    display: block;
+    color: #1565c0;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+}
