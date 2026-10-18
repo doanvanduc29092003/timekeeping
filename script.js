@@ -1,6 +1,6 @@
 
 window.addEventListener("load", function () {
-    alert("Năm 2027 chưa upload dữ liệu ngày nghỉ lễ tết, AI CHAT CHƯA HUẤN LUYỆN XONG, VUI LÒNG THÔNG CẢM!!! 17/10/2026");
+    alert("Năm 2027 chưa upload dữ liệu ngày nghỉ lễ tết, AI CHAT CHƯA HUẤN LUYỆN XONG, VUI LÒNG THÔNG CẢM!!! 18/10/2026");
 });
 
 "use strict";
